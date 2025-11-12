@@ -1,6 +1,6 @@
 require('dotenv').config();
 
 module.exports = {
-  TOKEN: process.env.DISCORD_TOKEN,
+  DISCORD_TOKEN: process.env.DISCORD_TOKEN,   // ✅ match Railway variable name
   API_BASE: process.env.API_BASE || 'https://yellow-project-api.onrender.com'
 };

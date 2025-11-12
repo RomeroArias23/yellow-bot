@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { TOKEN } = require('./config/config');
+const { DISCORD_TOKEN } = require('./config/config');
 
 // Create client
 const client = new Client({
@@ -39,4 +39,4 @@ require('http').createServer((req, res) => {
 }).listen(process.env.PORT || 3000);
 
 // Log in
-client.login(TOKEN);
+client.login(DISCORD_TOKEN);
