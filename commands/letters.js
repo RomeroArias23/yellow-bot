@@ -1,5 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const api = require('../utils/api');
+const createLetterImage = require('../utils/createLetterImage');
 
 module.exports = {
   name: 'carta',
@@ -24,14 +25,22 @@ module.exports = {
     try {
       const res = await api.post('/letters', { addressee, letter });
 
+      // 1. Generar la imagen
+      const imageBuffer = await createLetterImage(addressee, letter);
+      const attachment = new AttachmentBuilder(imageBuffer, { name: 'carta.png' });
+
+      // 2. Crear embed
       const embed = new EmbedBuilder()
         .setColor('#FDEA6B')
         .setTitle('💌 Carta creada en { YELLOW }')
         .setDescription(`**Para:** ${addressee}\n**Mensaje:** ${letter}`)
+        .setImage('attachment://carta.png')
         .setFooter({ text: 'Tu carta ha sido guardada en el archivo de { YELLOW }' })
         .setTimestamp();
 
-      message.reply({ embeds: [embed] });
+      // 3. Enviar mensaje con la imagen
+      await message.reply({ embeds: [embed], files: [attachment] });
+
     } catch (error) {
       console.error(error);
       message.reply('❌ No pude guardar la carta. Inténtalo más tarde.');
