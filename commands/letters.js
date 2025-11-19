@@ -1,6 +1,6 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const api = require('../utils/api');
-const createLetterImage = require('../utils/createLetterImage');
+const createLetterImage = require('../utils/createLetterImg');
 
 module.exports = {
   name: 'carta',
