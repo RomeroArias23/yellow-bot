@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "@discordjs/voice": "^0.19.0",
+    "@napi-rs/canvas": "^0.1.82",
     "axios": "^1.13.2",
     "discord.js": "^14.24.2",
     "dotenv": "^17.2.3",
