@@ -3,65 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <style>
+    /* Inyectamos las fuentes aquí mediante variables */
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url(data:font/ttf;base64,{{FONT_REGULAR}}) format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url(data:font/ttf;base64,{{FONT_BOLD}}) format('truetype');
+      font-weight: bold;
+      font-style: normal;
+    }
+
     body {
       margin: 0;
       padding: 0;
-      font-family: "JetBrains Mono", monospace;
+      width: 1080px; /* Forzar ancho */
     }
 
     #card {
       width: 1080px;
-      height: auto;
-      padding: 60px;
+      /* Altura mínima para que no se corte si es poco texto */
+      min-height: 1000px; 
+      padding: 80px 60px;
       box-sizing: border-box;
-      background-image: url("yellow-texture.jpg");
+      /* Inyectamos la imagen de fondo aquí */
+      background-image: url(data:image/jpeg;base64,{{BG_IMAGE}});
       background-size: cover;
       background-position: center;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      /* Asegurar que el contenedor se expanda */
+      position: relative;
     }
 
     h1 {
       margin-top: 0;
+      margin-bottom: 40px;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 48px;
       font-weight: bold;
       color: white;
+      line-height: 1.2;
     }
 
-    p {
+    p.message {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 32px;
       color: white;
-      white-space: pre-wrap;
+      white-space: pre-wrap; /* Respeta saltos de línea */
+      line-height: 1.5;
+      font-weight: normal;
+      flex-grow: 1; /* Empuja el footer hacia abajo */
     }
 
     .footer {
-      margin-top: 40px;
+      margin-top: 60px;
     }
 
     .date {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 24px;
       font-style: italic;
       color: white;
+      margin-bottom: 10px;
     }
 
     .watermark {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 16px;
-      margin-top: 20px;
-      color: white;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      width: 100%;
     }
   </style>
 </head>
 
 <body>
   <div id="card">
-    <h1>el mensaje que nunca envié:</h1>
-
-    <p>{{LETTER}}</p>
+    <div>
+      <h1>el mensaje que nunca envié:</h1>
+      <p class="message">{{LETTER}}</p>
+    </div>
 
     <div class="footer">
       <p class="date">fecha: {{DATE}}</p>
-      <p class="watermark">import "{ YELLOW }" from './CVLTVRE'</p>
+      <div class="watermark">import "{ YELLOW }" from './CVLTVRE'</div>
     </div>
   </div>
 </body>
