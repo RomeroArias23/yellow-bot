@@ -56,9 +56,6 @@ async function createLetterImage(addressee, letter) {
 
   const page = await browser.newPage();
 
-  // CONFIGURACIÓN CLAVE PARA IGUALAR TU CSS
-  // 1. Viewport igual al tamaño de tu CSS (280x320)
-  // 2. deviceScaleFactor: 3 -> Multiplica x3 la resolución (HD)
   await page.setViewport({
     width: 280,
     height: 320,
