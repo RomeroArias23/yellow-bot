@@ -1,65 +1,56 @@
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const path = require('path');
 
-async function createLetterImage(addressee, letter) {
+async function createLetterImage(addressee, letter, date) {
   const width = 1080;
   const height = 1350;
 
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  // Fondo suave tipo { YELLOW }
-  ctx.fillStyle = '#FFF9C4';
-  ctx.fillRect(0, 0, width, height);
+  // 1. Cargar textura de fondo
+  const texturePath = path.join(__dirname, 'yellow-texture.jpg');
+  const texture = await loadImage(texturePath);
+  ctx.drawImage(texture, 0, 0, width, height);
 
-  // Marco
-  ctx.strokeStyle = '#F5CD00';
-  ctx.lineWidth = 18;
-  ctx.strokeRect(35, 35, width - 70, height - 70);
+  // CONFIG TEXTO
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'left';
 
-  // Título
-  ctx.fillStyle = '#000';
-  ctx.font = '700 64px Sans-serif';
-  ctx.fillText(`Para: ${addressee}`, 80, 170);
+  // 2. Título
+  ctx.font = 'bold 55px Sans-serif';
+  ctx.fillText('el mensaje que nunca envié:', 80, 160);
 
-  // Texto del mensaje
-  ctx.font = '400 44px Sans-serif';
+  // 3. Mensaje multiline
+  ctx.font = '45px Sans-serif';
 
   const maxWidth = width - 160;
-  const lineHeight = 58;
-
-  const lines = [];
-  const words = letter.replace(/\n/g, ' \n ').split(/\s+/);
+  const lineHeight = 60;
+  const words = letter.split(' ');
   let line = '';
+  let y = 260;
 
   for (const word of words) {
-    if (word === '\n') {
-      lines.push(line);
-      line = '';
-      continue;
-    }
-    const testLine = line + word + ' ';
-    const metrics = ctx.measureText(testLine);
-
-    if (metrics.width > maxWidth) {
-      lines.push(line);
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > maxWidth) {
+      ctx.fillText(line, 80, y);
       line = word + ' ';
+      y += lineHeight;
     } else {
-      line = testLine;
+      line = test;
     }
   }
-  if (line) lines.push(line);
+  ctx.fillText(line, 80, y);
 
-  // Renderizar líneas
-  let y = 260;
-  for (const l of lines) {
-    ctx.fillText(l.trim(), 80, y);
-    y += lineHeight;
-  }
+  // 4. Fecha en esquina inferior derecha
+  ctx.font = 'italic 40px Sans-serif';
+  ctx.fillText(`fecha: ${date}`, width - 350, height - 120);
 
-  // Firma
-  ctx.font = '700 48px Sans-serif';
-  ctx.fillText('💛 { YELLOW }', 80, height - 120);
+  // 5. Watermark tipo código (abajo centrado)
+  ctx.font = '20px Monospace';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.textAlign = 'center';
+  ctx.fillText(`import "YELLOW" from './CVLTVRE'`, width / 2, height - 60);
 
   return canvas.toBuffer('image/png');
 }
