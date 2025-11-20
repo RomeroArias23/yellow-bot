@@ -5,39 +5,36 @@ const createLetterImage = require('../utils/createLetterImg');
 module.exports = {
   name: 'carta',
   description: 'Crea una carta anónima 💌',
-  async execute(message, args) {
 
-    const content = args.join(' ').split(',');
-    
-    if (content.length < 2) {
-      return message.reply('💛 **Uso:** `!carta Destinatario, tu mensaje (máx 300 caracteres)`');
+  async execute(message, { addressee, letter }) {
+
+    // ===========================
+    // validations
+    // ============================
+
+    // validate addressee
+    if (
+      !/^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*)*$/.test(addressee)
+    ) {
+      return message.reply(
+        '❌ El destinatario debe empezar con mayúscula y solo contener letras (puede incluir espacios).'
+      );
     }
 
-    // Destinatario = antes de la coma
-    const addressee = content[0].trim();
-
-    // Mensaje = todo lo demás después de la coma (une por si hay más comas)
-    const letter = content.slice(1).join(',').trim();
-
-    // Validar destinatario (solo primeras letras en mayúscula)
-    if (!/^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*)*$/.test(addressee)) {
-      return message.reply('❌ El destinatario debe empezar con mayúscula y solo contener letras (puede incluir espacios).');
-    }
-
-    // Validar longitud del mensaje
+    // Validate length of the message
     if (letter.length > 300) {
       return message.reply(`❌ Tu mensaje tiene ${letter.length}/300 caracteres.`);
     }
 
     try {
-      // Guardar en tu API
+      // save in the API
       const res = await api.post('/letters', { addressee, letter });
 
-      // Generar imagen
+      // generate image
       const imageBuffer = await createLetterImage(addressee, letter);
       const attachment = new AttachmentBuilder(imageBuffer, { name: 'carta.png' });
 
-      // Crear embed
+      // create embed
       const embed = new EmbedBuilder()
         .setColor('#FDEA6B')
         .setTitle('💌 Carta creada en { YELLOW }')
