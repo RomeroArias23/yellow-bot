@@ -1,56 +1,62 @@
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const path = require('path');
 
-async function createLetterImage(addressee, letter, date) {
+GlobalFonts.registerFromPath(
+  path.join(__dirname, 'fonts/JetBrainsMono-Regular.ttf'),
+  'JetBrainsMono'
+);
+
+GlobalFonts.registerFromPath(
+  path.join(__dirname, 'fonts/JetBrainsMono-Bold.ttf'),
+  'JetBrainsMonoBold'
+);
+
+async function createLetterImage(addressee, letter) {
   const width = 1080;
   const height = 1350;
 
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  // 1. Cargar textura de fondo
-  const texturePath = path.join(__dirname, 'yellow-texture.jpg');
-  const texture = await loadImage(texturePath);
+  // FONDO
+  const texture = await loadImage(path.join(__dirname, 'yellow-texture.jpg'));
   ctx.drawImage(texture, 0, 0, width, height);
 
-  // CONFIG TEXTO
+  // TÍTULO
   ctx.fillStyle = '#ffffff';
-  ctx.textAlign = 'left';
+  ctx.font = '48px "JetBrainsMonoBold"';
+  ctx.fillText('el mensaje que nunca envié:', 60, 120);
 
-  // 2. Título
-  ctx.font = 'bold 55px Sans-serif';
-  ctx.fillText('el mensaje que nunca envié:', 80, 160);
+  // MENSAJE MULTILÍNEA
+  ctx.fillStyle = '#000000';
+  ctx.font = '32px "JetBrainsMono"';
 
-  // 3. Mensaje multiline
-  ctx.font = '45px Sans-serif';
-
-  const maxWidth = width - 160;
-  const lineHeight = 60;
+  const maxWidth = width - 120;
+  const lineHeight = 50;
   const words = letter.split(' ');
+
   let line = '';
-  let y = 260;
+  let y = 200;
 
   for (const word of words) {
-    const test = line + word + ' ';
-    if (ctx.measureText(test).width > maxWidth) {
-      ctx.fillText(line, 80, y);
+    const testLine = line + word + ' ';
+    if (ctx.measureText(testLine).width > maxWidth) {
+      ctx.fillText(line, 60, y);
       line = word + ' ';
       y += lineHeight;
     } else {
-      line = test;
+      line = testLine;
     }
   }
-  ctx.fillText(line, 80, y);
+  ctx.fillText(line, 60, y);
 
-  // 4. Fecha en esquina inferior derecha
-  ctx.font = 'italic 40px Sans-serif';
-  ctx.fillText(`fecha: ${date}`, width - 350, height - 120);
+  // FECHA
+  ctx.font = '26px "JetBrainsMono"';
+  ctx.fillText(`fecha: ${new Date().toLocaleDateString('es-MX')}`, 60, height - 100);
 
-  // 5. Watermark tipo código (abajo centrado)
-  ctx.font = '20px Monospace';
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.textAlign = 'center';
-  ctx.fillText(`import "YELLOW" from './CVLTVRE'`, width / 2, height - 60);
+  // WATERMARK
+  ctx.font = '16px "JetBrainsMono"';
+  ctx.fillText(`import "{ YELLOW }" from './CVLTVRE'`, width / 2 - 150, height - 40);
 
   return canvas.toBuffer('image/png');
 }
