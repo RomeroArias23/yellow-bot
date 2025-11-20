@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    /* Inyectamos las fuentes aquí mediante variables */
+    /* 1. Fuentes (Mantenemos JetBrains Mono para consistencia) */
     @font-face {
       font-family: 'JetBrains Mono';
       src: url(data:font/ttf;base64,{{FONT_REGULAR}}) format('truetype');
@@ -21,79 +21,104 @@
     body {
       margin: 0;
       padding: 0;
-      width: 1080px; /* Forzar ancho */
+      background: transparent;
+      font-family: 'JetBrains Mono', monospace;
+      -webkit-font-smoothing: antialiased;
     }
 
-    #card {
-      width: 1080px;
-      /* Altura mínima para que no se corte si es poco texto */
-      min-height: 1000px; 
-      padding: 80px 60px;
-      box-sizing: border-box;
-      /* Inyectamos la imagen de fondo aquí */
-      background-image: url(data:image/jpeg;base64,{{BG_IMAGE}});
+    /* 2. Estilos copiados y adaptados de tu CSS */
+    
+    /* El contenedor principal de la tarjeta */
+    .waves_tile-features-6 {
+      width: 280px;
+      height: 320px;
+      /* Fondo inyectado */
+      background-image: url(data:image/jpeg;base64,{{BG_IMAGE}}); 
       background-size: cover;
       background-position: center;
-      display: flex;
+      background-repeat: no-repeat;
+      
+      /* Flexbox layout del CSS original */
       flex-direction: column;
-      justify-content: space-between;
-      /* Asegurar que el contenedor se expanda */
+      align-items: flex-start;
+      padding: 36px 32px;
+      display: flex;
       position: relative;
+      overflow: hidden;
+      box-sizing: border-box; /* Vital para que el padding no aumente el tamaño */
     }
 
-    h1 {
+    .waves_mg-bottom-16 {
+      margin-bottom: 16px;
+      width: 100%;
+      position: relative; /* Necesario para la fecha absoluta */
+      height: 100%; /* Ocupar el espacio disponible */
+    }
+
+    /* Título */
+    .waves_heading-3-no-margins {
       margin-top: 0;
-      margin-bottom: 40px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 48px;
-      font-weight: bold;
-      color: white;
-      line-height: 1.2;
-    }
-
-    p.message {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 32px;
-      color: white;
-      white-space: pre-wrap; /* Respeta saltos de línea */
-      line-height: 1.5;
-      font-weight: normal;
-      flex-grow: 1; /* Empuja el footer hacia abajo */
-    }
-
-    .footer {
-      margin-top: 60px;
-    }
-
-    .date {
-      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0;
       font-size: 24px;
-      font-style: italic;
-      color: white;
-      margin-bottom: 10px;
+      font-weight: 700;
+      line-height: 1.208;
+      text-align: left;
+      color: #ffffff; /* Forzamos blanco según diseño visual usual, o usa #f4e603 si prefieres */
     }
 
+    /* Cuerpo del mensaje */
+    p.message {
+      font-size: 14px; /* Ajustado para caber en la caja pequeña (original p era 1rem/16px) */
+      line-height: 1.4;
+      color: #fff;
+      margin-top: 12px;
+      white-space: pre-wrap;
+      /* Limitar líneas para que no se desborde */
+      max-height: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Fecha */
+    .date {
+      position: absolute;
+      bottom: 16px; 
+      left: 0px; /* Ajuste: 150px en caja de 280px se sale. Lo puse relativo o ajustado */
+      font-size: 12px; /* Reducido ligeramente para la caja chica */
+      font-style: italic;
+      color: #fff;
+      width: 100%;
+      text-align: right; /* Alinear a la derecha en lugar de left fijo */
+    }
+
+    /* Watermark */
     .watermark {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.8);
+      position: absolute;
+      bottom: 10px; 
+      left: 50%;
+      transform: translateX(-50%);
       text-align: center;
       width: 100%;
+    }
+
+    .watermark-p {
+      font-size: 8px; 
+      color: rgba(255, 255, 255, 0.8); 
+      margin: 0;
     }
   </style>
 </head>
 
 <body>
-  <div id="card">
-    <div>
-      <h1>el mensaje que nunca envié:</h1>
-      <p class="message">{{LETTER}}</p>
-    </div>
-
-    <div class="footer">
-      <p class="date">fecha: {{DATE}}</p>
-      <div class="watermark">import "{ YELLOW }" from './CVLTVRE'</div>
-    </div>
+  <div class="waves_tile-features-6" id="card">
+      <div class="waves_mg-bottom-16">
+          <h1 class="waves_heading-3-no-margins">el mensaje que nunca envié:</h1>
+          <p class="message">{{LETTER}}</p>
+          <p class="date">fecha: {{DATE}}</p>
+      </div>
+      <div class="watermark">
+          <code class="watermark-p">import "{ YELLOW }" from './CVLTVRE'</code>
+      </div>
   </div>
 </body>
 </html>
