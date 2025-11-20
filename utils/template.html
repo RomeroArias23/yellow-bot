@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    /* 1. Fuentes (Mantenemos JetBrains Mono para consistencia) */
     @font-face {
       font-family: 'JetBrains Mono';
       src: url(data:font/ttf;base64,{{FONT_REGULAR}}) format('truetype');
@@ -23,75 +22,61 @@
       padding: 0;
       background: transparent;
       font-family: 'JetBrains Mono', monospace;
-      -webkit-font-smoothing: antialiased;
     }
 
-
-      .waves_tile-features-6 {
-      width: 280px;
-      height: 320px;
-      /* Fondo inyectado */
+    .waves_tile-features-6 {
+      width: 688px;
+      height: 784px;
+      
       background-image: url(data:image/jpeg;base64,{{BG_IMAGE}}); 
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       
-      /* Flexbox layout del CSS original */
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding: 36px 32px;
-      display: flex;
+      padding: 60px 50px; 
       position: relative;
-      overflow: hidden;
-      box-sizing: border-box; /* Vital para que el padding no aumente el tamaño */
+      box-sizing: border-box;
     }
 
     .waves_mg-bottom-16 {
-      margin-bottom: 16px;
       width: 100%;
-      position: relative; /* Necesario para la fecha absoluta */
-      height: 100%; /* Ocupar el espacio disponible */
+      height: 100%;
     }
 
-    /* title */
     .waves_heading-3-no-margins {
-      margin-top: 0;
-      margin-bottom: 0;
-      font-size: 20px;
+      margin: 0 0 30px 0;
+      font-size: 40px; 
       font-weight: 700;
-      line-height: 1.208;
-      text-align: left;
-      color: #f4e603;
+      color: #f4e603; 
+      line-height: 1.2;
     }
 
-    /* Cbody of message */
     p.message {
-      font-size: 14px; 
-      line-height: 1.4;
+      font-size: 28px; 
+      line-height: 1.5;
       color: #fff;
-      margin-top: 12px;
       white-space: pre-wrap;
-      max-height: 180px;
+      max-height: 500px;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    /* Fecha */
     .date {
       position: absolute;
       bottom: 12px; 
-      left: 0px; /* Ajuste: 150px en caja de 280px se sale. Lo puse relativo o ajustado */
-      font-size: 12px; /* Reducido ligeramente para la caja chica */
+      left: 50px; 
+      right: 50px; 
+      font-size: 20px;
       font-style: italic;
       color: #fff;
-      width: 100%;
-      text-align: right; /* Alinear a la derecha en lugar de left fijo */
+      text-align: right; 
     }
 
-    /* Watermark */
     .watermark {
       position: absolute;
-      bottom: 10px; 
+      bottom: 30px; 
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
@@ -99,7 +84,7 @@
     }
 
     .watermark-p {
-      font-size: 8px; 
+      font-size: 14px; 
       color: rgba(255, 255, 255, 0.8); 
       margin: 0;
     }
@@ -111,8 +96,10 @@
       <div class="waves_mg-bottom-16">
           <h1 class="waves_heading-3-no-margins">el mensaje que nunca envié:</h1>
           <p class="message">{{LETTER}}</p>
-          <p class="date">fecha: {{DATE}}</p>
       </div>
+      
+      <p class="date">fecha: {{DATE}}</p>
+      
       <div class="watermark">
           <code class="watermark-p">import "{ YELLOW }" from './CVLTVRE'</code>
       </div>
