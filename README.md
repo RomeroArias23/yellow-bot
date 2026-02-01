@@ -22,28 +22,3 @@ It allows users to:
 | `!carta <Destinatario> | <Mensaje>` | Creates and stores an anonymous letter (max 300 chars) |
 | `!buscar <Destinatario>` | Searches letters by addressee |
 | *(more commands coming soon)*
-
----
-
-## 🏗️ Project Structure
-
-bot-yellow/
-├── commands/ # Bot commands
-│ ├── carta.js
-│ ├── buscar.js
-│ └── radio.js
-│
-├── events/ # Discord event handlers
-│ ├── ready.js
-│ └── messageCreate.js
-│
-├── utils/ # Helper functions (e.g., API client)
-│ └── api.js
-│
-├── config/ # Configuration and environment variables
-│ └── config.js
-│
-├── index.js # Main bot entry point
-├── package.json
-├── .env # Environment variables (never commit this!)
-└── README.md
